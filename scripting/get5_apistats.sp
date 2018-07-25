@@ -362,6 +362,22 @@ public void Get5_OnRoundStatsUpdated() {
   }
 }
 
+public void Get5_OnMapPicked(MatchTeam team, const char[] map) {
+  char teamname[64];
+  GetTeamString(team, teamname, sizeof(teamname));
+
+  Handle req = CreateRequest(k_EHTTPMethodPOST, "match/%d/pick", g_MatchID);
+  if (req != INVALID_HANDLE) {
+    AddStringParam(req, "team", teamname);
+    AddStringParam(req, "map", map);
+    SteamWorks_SendHTTPRequest(req);
+  }
+}
+
+public void Get5_OnMapVetoed(MatchTeam team, const char[] map) {
+  // team vetoed mapname
+}
+
 static int MapNumber() {
   int t1, t2, n;
   int buf;

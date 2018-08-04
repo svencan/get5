@@ -375,7 +375,15 @@ public void Get5_OnMapPicked(MatchTeam team, const char[] map) {
 }
 
 public void Get5_OnMapVetoed(MatchTeam team, const char[] map) {
-  // team vetoed mapname
+  char teamname[64];
+  GetTeamString(team, teamname, sizeof(teamname));
+
+  Handle req = CreateRequest(k_EHTTPMethodPOST, "match/%d/ban", g_MatchID);
+  if (req != INVALID_HANDLE) {
+    AddStringParam(req, "team", teamname);
+    AddStringParam(req, "map", map);
+    SteamWorks_SendHTTPRequest(req);
+  }
 }
 
 static int MapNumber() {
